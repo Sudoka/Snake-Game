@@ -144,7 +144,7 @@ public class Snake {
 		
 		public void draw(Graphics page) {
 			page.setColor(color);
-			page.fillRect(x, y, width, width);
+			page.fillOval(x, y, width, width);
 			
 		}
 		
