@@ -10,7 +10,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-
+// Direction of snake's movement
 enum Direction {left, right, up, down}
 
 public class GamePanel extends JPanel {
@@ -20,11 +20,15 @@ public class GamePanel extends JPanel {
 	public final int panelWidth = 500;
 	public final int panelHeight = 400;
 	private final int blockWidth = 10;
+	
+	// Delay controls speed of snake
 	private final int DELAY = 100;
 	
 	private JButton startButton;
 	private int highestScore;
-	private JLabel scoreLabel;
+	private int currentScore;
+	private JLabel currentScoreLabel;
+	private JLabel highScoreLabel;
 	private JToolBar toolBar;
 	private Grid grid;
 	private Timer timer;
@@ -32,25 +36,30 @@ public class GamePanel extends JPanel {
 	private Apple apple;
 	private boolean ingame;
 	
-	
+	// places buttons and labels above game area
 	public GamePanel() {
 		
 		setLayout(new BorderLayout());
 		setBackground(Color.gray);
 		
+		
+		
+		currentScore = 6;
 		highestScore = 0;
 		startButton = new JButton("Start");
 		startButton.addActionListener(new ButtonListener());
 		
-		scoreLabel = new JLabel("Longest Snake: " + highestScore);
+		highScoreLabel = new JLabel("Longest Snake: " + highestScore);
+		currentScoreLabel = new JLabel("Current Length: " + currentScore);
 		grid = new Grid();
 		
 		
 		toolBar = new JToolBar("Controls");
 		toolBar.setLayout(new FlowLayout());
 		toolBar.setFloatable(false);
+		toolBar.add(highScoreLabel);
         toolBar.add(startButton);
-        toolBar.add(scoreLabel);
+        toolBar.add(currentScoreLabel);
         
         add(toolBar, BorderLayout.NORTH);
         add(grid, BorderLayout.CENTER);
@@ -116,9 +125,9 @@ public class GamePanel extends JPanel {
 				// move apple if snake ate it and update score if necessary
 				if(snake.ateApple(apple)) {
 					apple.newLocation();
-					if(snake.getLength() > highestScore) {
-						highestScore = snake.getLength();
-						scoreLabel.setText("Longest Snake: " + highestScore);
+					if(snake.getLength() > currentScore) {
+						currentScore = snake.getLength();
+						currentScoreLabel.setText("Longest Snake: " + currentScore);
 					}
 				}
 				repaint();
